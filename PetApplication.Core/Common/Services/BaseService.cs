@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using System.Net.Http;
 using PetApplication.Core.Common.Helpers;
+using System.Collections.Generic;
 
 namespace PetApplication.Core.Common.Services
 {

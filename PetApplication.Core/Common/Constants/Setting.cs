@@ -1,5 +1,5 @@
 ﻿
-namespace PetApplication.Core.Common
+namespace PetApplication.Core.Common.Constants
 {
     public class Setting
     {

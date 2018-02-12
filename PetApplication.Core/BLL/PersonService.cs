@@ -9,12 +9,13 @@ namespace PetApplication.Core.BLL
 {
     public class PersonService : BaseService
     {
+
         public PersonService() 
             : base()
         {
         }
 
-        public async Task<IEnumerable<Person>> GetPeople()
+        private async Task<IEnumerable<Person>> GetAll()
         {
             var httpResponse = await _httpClient.GetAsync("people.json");
 
@@ -29,6 +30,18 @@ namespace PetApplication.Core.BLL
             }
 
             return new List<Person>();
+        }
+
+        public IEnumerable<Person> GetByGender(string gender)
+        {
+            var people = Task.Run(() => GetAll()).Result;
+            return people.Where(x => x.Gender.ToLower().Contains(gender.ToLower()));
+        }
+
+        public IEnumerable<Pet> GetAllPet()
+        {
+            var people = Task.Run(() => GetAll()).Result;
+            return people.SelectMany(p => p.Pets);            
         }
     }
 }

@@ -51,11 +51,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\PersonService.cs" />
+    <Compile Include="BLL\PetService.cs" />
+    <Compile Include="Common\Constants\Gender.cs" />
+    <Compile Include="Common\Constants\PetType.cs" />
     <Compile Include="Common\Helpers\BaseHttpClient.cs" />
     <Compile Include="Common\Services\BaseService.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Pet.cs" />
-    <Compile Include="Common\Setting.cs" />
+    <Compile Include="Common\Constants\Setting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
