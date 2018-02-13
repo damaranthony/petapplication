@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetApplication", "PetApplic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetApplication.Core", "PetApplication.Core\PetApplication.Core.csproj", "{F3074738-2CCA-4D80-998C-3041518F9D85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetApplication.Test", "PetApplication.Test\PetApplication.Test.csproj", "{22BC7DDC-8A90-41B4-8498-730C76E8E123}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetApplication.Tests", "PetApplication.Tests\PetApplication.Tests.csproj", "{A86BC39C-2803-480D-9F63-A7FFF32D0A33}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F3074738-2CCA-4D80-998C-3041518F9D85} = {F3074738-2CCA-4D80-998C-3041518F9D85}
 	EndProjectSection
@@ -29,10 +29,10 @@ Global
 		{F3074738-2CCA-4D80-998C-3041518F9D85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3074738-2CCA-4D80-998C-3041518F9D85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3074738-2CCA-4D80-998C-3041518F9D85}.Release|Any CPU.Build.0 = Release|Any CPU
-		{22BC7DDC-8A90-41B4-8498-730C76E8E123}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22BC7DDC-8A90-41B4-8498-730C76E8E123}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22BC7DDC-8A90-41B4-8498-730C76E8E123}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22BC7DDC-8A90-41B4-8498-730C76E8E123}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A86BC39C-2803-480D-9F63-A7FFF32D0A33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A86BC39C-2803-480D-9F63-A7FFF32D0A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A86BC39C-2803-480D-9F63-A7FFF32D0A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A86BC39C-2803-480D-9F63-A7FFF32D0A33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

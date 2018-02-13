@@ -13,6 +13,8 @@ namespace PetApplication.Core.BLL
         private readonly IPersonService _personService;
         private readonly IPetService _petService;
 
+        public PetFetcher() { }
+
         public PetFetcher(
             IDataSource datasource,
             IPersonService personService,
