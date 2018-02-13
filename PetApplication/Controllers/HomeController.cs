@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web.Mvc;
 using PetApplication.Core.BLL;
 using PetApplication.Core.Common.Constants;
+using PetApplication.Core.Common.Extensions;
+using PetApplication.Core.Models.ViewModels;
 
 namespace PetApplication.Controllers
 {
@@ -11,12 +13,16 @@ namespace PetApplication.Controllers
     {
         private PetService _petService = new PetService();
 
+
         public ActionResult Index()
         {
-            var femaleOwnerCats = _petService.GetByTypeGenderAsc(PetType.Cat, Gender.Female);
-            var maleOwnerCats = _petService.GetByTypeGenderAsc(PetType.Cat, Gender.Male);
+            var petsViewModel = new PetsViewModel
+            {
+                FemaleOwned = _petService.GetByTypeGenderAsc(PetType.Cat, Gender.Female).ToList(),
+                MaleOwned = _petService.GetByTypeGenderAsc(PetType.Cat, Gender.Male).ToList()
+            };
 
-            return View();
+            return View(petsViewModel);
         }
     }
 }

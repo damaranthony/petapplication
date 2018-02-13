@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PetApplication.Core.Models
+namespace PetApplication.Core.Models.Entities
 {
     [Serializable]
     public class Pet

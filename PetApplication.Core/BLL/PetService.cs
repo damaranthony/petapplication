@@ -1,9 +1,7 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PetApplication.Core.Models;
+using PetApplication.Core.Models.Entities;
 using PetApplication.Core.Common.Services;
 
 namespace PetApplication.Core.BLL
@@ -39,7 +37,7 @@ namespace PetApplication.Core.BLL
         public IEnumerable<Pet> GetByOwnerGender(string gender)
         {
             var personService = new PersonService();
-            var people = personService.GetByGender(gender).ToList();
+            var people = personService.GetByGender(gender).Where(p => p.Pets != null).ToList();
 
             return GetAll(people);
         }

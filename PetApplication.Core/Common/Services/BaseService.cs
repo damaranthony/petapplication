@@ -1,7 +1,6 @@
 ﻿
 using System.Net.Http;
 using PetApplication.Core.Common.Helpers;
-using System.Collections.Generic;
 
 namespace PetApplication.Core.Common.Services
 {

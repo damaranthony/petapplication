@@ -1,3 +1,20 @@
-﻿@{
+﻿@model PetApplication.Core.Models.ViewModels.PetsViewModel
+@{
     ViewBag.Title = "Home Page";
 }
+
+<h2>Male</h2>
+<ul>
+    @foreach (var pet in Model.MaleOwned)
+    {
+        <li>@pet.Name</li>
+    }
+</ul>
+
+<h2>Female</h2>
+<ul>
+    @foreach (var pet in Model.FemaleOwned)
+    {
+        <li>@pet.Name</li>
+    }
+</ul>

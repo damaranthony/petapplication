@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PetApplication.Core.Models;
+using PetApplication.Core.Models.Entities;
 using PetApplication.Core.Common.Services;
 using Newtonsoft.Json;
 namespace PetApplication.Core.BLL
 {
     public class PersonService : BaseService
     {
+        private IEnumerable<Person> People { get; set; }
 
         public PersonService() 
             : base()
         {
+            People = Task.Run(() => GetAll()).Result;
         }
 
         private async Task<IEnumerable<Person>> GetAll()
@@ -34,14 +36,12 @@ namespace PetApplication.Core.BLL
 
         public IEnumerable<Person> GetByGender(string gender)
         {
-            var people = Task.Run(() => GetAll()).Result;
-            return people.Where(x => x.Gender.ToLower().Contains(gender.ToLower()));
+            return People.Where(x => x.Gender.ToLower().Contains(gender.ToLower()));
         }
 
         public IEnumerable<Pet> GetAllPet()
         {
-            var people = Task.Run(() => GetAll()).Result;
-            return people.SelectMany(p => p.Pets);            
+            return People.SelectMany(p => p.Pets);            
         }
     }
 }

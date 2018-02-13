@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PetApplication.Core.Models
+namespace PetApplication.Core.Models.Entities
 {
     [Serializable]
     public class Person
