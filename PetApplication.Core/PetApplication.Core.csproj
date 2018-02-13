@@ -51,7 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\PetFetcher.cs" />
     <Compile Include="Common\Config\Configurator.cs" />
+    <Compile Include="Common\Extensions\StringExtension.cs" />
     <Compile Include="Repositories\DataSource.cs" />
     <Compile Include="Repositories\IDataSource.cs" />
     <Compile Include="Repositories\IPersonService.cs" />
@@ -60,7 +62,6 @@
     <Compile Include="Repositories\PetService.cs" />
     <Compile Include="Common\Constants\Gender.cs" />
     <Compile Include="Common\Constants\PetType.cs" />
-    <Compile Include="Common\Extensions\ModelExtensions.cs" />
     <Compile Include="Common\Helpers\BaseHttpClient.cs" />
     <Compile Include="Common\Services\BaseService.cs" />
     <Compile Include="Models\Entities\Person.cs" />

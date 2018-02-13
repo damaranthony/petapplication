@@ -2,30 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using PetApplication.Core.Models.Entities;
-using PetApplication.Core.Common.Services;
+using PetApplication.Core.Common.Constants;
 
 namespace PetApplication.Core.Repositories
 {
     public class PetService : IPetService
     {
-        public IEnumerable<Pet> GetAll(List<Person> people)
+        public List<Pet> GetAllByAscendingPetName(List<Pet> pets)
         {
-            return people.SelectMany(p => p.Pets);
+            return pets.OrderBy(p => p.Name).ToList();
         }
 
-        public IEnumerable<Pet> GetByOwnerGender(string gender)
+        public IEnumerable<Pet> GetAllCat(List<Person> people)
         {
-            var personService = new PersonService();
-            var people = personService.GetByGender(gender).Where(p => p.Pets != null).ToList();
-
-            return GetAll(people);
-        }
-
-        public IEnumerable<Pet> GetByTypeGenderAsc(string type, string gender)
-        {
-            var pets = GetByOwnerGender(gender);
-
-            return pets.Where(p => p.Type.ToLower().Contains(type.ToLower())).OrderBy(p => p.Name);
+            return people
+                .SelectMany(p => p.Pets)
+                .Where(p => p.Type.ToLower().Contains(PetType.Cat))
+                .GroupBy(p => p.Name)
+                .Select(grp => grp.FirstOrDefault());
         }
     }
 }

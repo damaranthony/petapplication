@@ -5,10 +5,7 @@ namespace PetApplication.Core.Repositories
 {
     public interface IPetService
     {
-        IEnumerable<Pet> GetAll(List<Person> people);
-
-        IEnumerable<Pet> GetByOwnerGender(string gender);
-
-        IEnumerable<Pet> GetByTypeGenderAsc(string type, string gender);
+        IEnumerable<Pet> GetAllCat(List<Person> people);
+        List<Pet> GetAllByAscendingPetName(List<Pet> pets);
     }
 }

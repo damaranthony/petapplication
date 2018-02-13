@@ -20,6 +20,14 @@ namespace PetApplication.Core.Common.Config
             }
         }
 
+        public static string Default_Media_Type
+        {
+            get
+            {
+                return Get("DEFAULT_MEDIA_TYPE");
+            }
+        }
+
         public static string Get(string key)
         {
             return ConfigurationManager.AppSettings[key];
