@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetApplication", "PetApplication\PetApplication.csproj", "{F219749B-74A3-496E-AD5A-391651811F93}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F3074738-2CCA-4D80-998C-3041518F9D85} = {F3074738-2CCA-4D80-998C-3041518F9D85}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetApplication.Core", "PetApplication.Core\PetApplication.Core.csproj", "{F3074738-2CCA-4D80-998C-3041518F9D85}"
 EndProject
