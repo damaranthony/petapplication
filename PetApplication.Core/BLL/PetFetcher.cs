@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
 using PetApplication.Core.Repositories;
 using PetApplication.Core.Models.ViewModels;
-using PetApplication.Core.Models.Entities;
 
 namespace PetApplication.Core.BLL
 {
@@ -25,17 +22,21 @@ namespace PetApplication.Core.BLL
             _personService = personService;
             _petService = petService;
         }
-
+        /// <summary>
+        /// Gets all pets segregated by owner's gender
+        /// </summary>
+        /// <returns>Returns PetViewModel for display</returns>
         public PetsViewModel GetAllPetsByOwnerGender()
         {
+            //get response string from api
             var responseString = Task.Run(_dataSource.GetDataAsync).Result;
-            
+            //get owners by gender
             var femaleOwners = _personService.GetFemaleOwners(responseString).ToList();
             var maleOwners = _personService.GetMaleOwners(responseString).ToList();
-
+            //get pets by owners
             var femaleOwnedCats = _petService.GetAllCat(femaleOwners).ToList();
             var maleOwnedCats = _petService.GetAllCat(maleOwners).ToList();
-
+            //assign view model for display
             var petsViewModel = new PetsViewModel
             {
                 FemaleOwned = _petService.GetAllByAscendingPetName(femaleOwnedCats),

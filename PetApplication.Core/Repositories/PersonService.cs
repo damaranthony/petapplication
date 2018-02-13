@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PetApplication.Core.Models.Entities;
-using Newtonsoft.Json;
 using PetApplication.Core.Common.Constants;
 using PetApplication.Core.Common.Extensions;
 
@@ -27,7 +26,7 @@ namespace PetApplication.Core.Repositories
         {
             var people = responseString.ToPersonEntities();
 
-            return people.Where(x => x.Gender.ToLower().Contains(Gender.Female));
+            return people.Where(x => x.Gender.ToLower() == Gender.Female && x.Pets != null);
         }
         /// <summary>
         /// Returns a list of Person object by gender male
@@ -38,7 +37,7 @@ namespace PetApplication.Core.Repositories
         {
             var people = responseString.ToPersonEntities();
 
-            return people.Where(x => x.Gender.ToLower().Contains(Gender.Male));
+            return people.Where(x => x.Gender.ToLower() == Gender.Male && x.Pets != null);
         }
 
     }
