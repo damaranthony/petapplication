@@ -1,25 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PetApplication.Core.Models.Entities;
 using PetApplication.Core.Common.Services;
 using Newtonsoft.Json;
-namespace PetApplication.Core.BLL
+using PetApplication.Core.Common.Config;
+
+namespace PetApplication.Core.Repositories
 {
     public class PersonService : BaseService
     {
-        private IEnumerable<Person> People { get; set; }
+        private readonly IEnumerable<Person> People;
 
         public PersonService() 
             : base()
         {
-            People = Task.Run(() => GetAll()).Result;
+            People = Task.Run(GetAll).Result;
         }
 
         private async Task<IEnumerable<Person>> GetAll()
         {
-            var httpResponse = await _httpClient.GetAsync("people.json");
+            var httpResponse = await _httpClient.GetAsync(Configurator.People_Api);
 
             if (httpResponse.IsSuccessStatusCode)
             {

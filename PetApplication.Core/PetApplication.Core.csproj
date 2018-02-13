@@ -34,6 +34,7 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
@@ -50,8 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BLL\PersonService.cs" />
-    <Compile Include="BLL\PetService.cs" />
+    <Compile Include="Common\Config\Configurator.cs" />
+    <Compile Include="Repositories\DataSource.cs" />
+    <Compile Include="Repositories\IDataSource.cs" />
+    <Compile Include="Repositories\IPersonService.cs" />
+    <Compile Include="Repositories\IPetService.cs" />
+    <Compile Include="Repositories\PersonService.cs" />
+    <Compile Include="Repositories\PetService.cs" />
     <Compile Include="Common\Constants\Gender.cs" />
     <Compile Include="Common\Constants\PetType.cs" />
     <Compile Include="Common\Extensions\ModelExtensions.cs" />
@@ -59,12 +65,12 @@
     <Compile Include="Common\Services\BaseService.cs" />
     <Compile Include="Models\Entities\Person.cs" />
     <Compile Include="Models\Entities\Pet.cs" />
-    <Compile Include="Common\Constants\Setting.cs" />
     <Compile Include="Models\ViewModels\PetsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

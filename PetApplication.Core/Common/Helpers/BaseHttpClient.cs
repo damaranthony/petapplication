@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using PetApplication.Core.Common.Config;
 using PetApplication.Core.Common.Constants;
 
 namespace PetApplication.Core.Common.Helpers
@@ -11,7 +12,7 @@ namespace PetApplication.Core.Common.Helpers
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri(Setting.ExternalApi)
+                BaseAddress = new Uri(Configurator.Base_Api)
             };
 
             client.DefaultRequestHeaders.Accept.Clear();

@@ -4,34 +4,13 @@ using System.Linq;
 using PetApplication.Core.Models.Entities;
 using PetApplication.Core.Common.Services;
 
-namespace PetApplication.Core.BLL
+namespace PetApplication.Core.Repositories
 {
-    public class PetService : BaseService
+    public class PetService : IPetService
     {
-        public PetService() : base()
-        {
-
-        }
-        
-        public IEnumerable<Pet> GetAll()
-        {
-            var personService = new PersonService();
-            var pets = personService.GetAllPet();
-
-            return pets;
-        }
-
         public IEnumerable<Pet> GetAll(List<Person> people)
         {
             return people.SelectMany(p => p.Pets);
-
-        }
-
-        public IEnumerable<Pet> GetByType(string type)
-        {
-            var pets = GetAll();
-
-            return pets.Where(p => p.Type.ToLower().Contains(type.ToLower()));
         }
 
         public IEnumerable<Pet> GetByOwnerGender(string gender)

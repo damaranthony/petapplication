@@ -6,7 +6,7 @@ namespace PetApplication.Core.Common.Services
 {
     public abstract class BaseService
     {
-        protected HttpClient _httpClient;
+        protected readonly HttpClient _httpClient;
 
         protected BaseService()
         {
