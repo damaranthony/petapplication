@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using PetApplication.Core.BLL;
 using PetApplication.Core.Common.Constants;
-using PetApplication.Core.Common.Extensions;
 using PetApplication.Core.Models.ViewModels;
 
 namespace PetApplication.Controllers
