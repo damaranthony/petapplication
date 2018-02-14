@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PetApplication.Core.Models.Entities;
 
 namespace PetApplication.Core.Repositories

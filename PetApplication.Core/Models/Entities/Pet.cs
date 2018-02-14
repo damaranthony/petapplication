@@ -5,7 +5,13 @@ namespace PetApplication.Core.Models.Entities
     [Serializable]
     public class Pet
     {
+        /// <summary>
+        /// The string name of a pet
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// String representation of type of pet
+        /// </summary>
         public string Type { get; set; }
 
         /// <summary>

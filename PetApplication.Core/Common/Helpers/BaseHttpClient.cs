@@ -2,12 +2,15 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using PetApplication.Core.Common.Config;
-using PetApplication.Core.Common.Constants;
 
 namespace PetApplication.Core.Common.Helpers
 {
     public static class BaseHttpClient
     {
+        /// <summary>
+        /// Returns the HttpClient based on the default API from App Config
+        /// </summary>
+        /// <returns>Returns the HttpClient</returns>
         public static HttpClient GetClient()
         {
             var client = new HttpClient

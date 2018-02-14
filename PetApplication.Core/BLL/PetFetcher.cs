@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using PetApplication.Core.Repositories;
 using PetApplication.Core.Models.ViewModels;
 
@@ -35,6 +32,7 @@ namespace PetApplication.Core.BLL
             //get owners by gender
             var femaleOwners = _personService.GetFemaleOwners(responseString).ToList();
             var maleOwners = _personService.GetMaleOwners(responseString).ToList();
+            
             //get pets by owners
             var femaleOwnedCats = _petService.GetAllCat(femaleOwners).ToList();
             var maleOwnedCats = _petService.GetAllCat(maleOwners).ToList();

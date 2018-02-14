@@ -2,7 +2,6 @@
 using System.Linq;
 using PetApplication.Core.Models.Entities;
 using PetApplication.Core.Common.Constants;
-using PetApplication.Core.Common.Extensions;
 using Newtonsoft.Json;
 
 namespace PetApplication.Core.Repositories

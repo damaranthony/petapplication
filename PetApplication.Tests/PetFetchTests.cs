@@ -6,7 +6,6 @@ using PetApplication.Core.BLL;
 using PetApplication.Core.Repositories;
 using PetApplication.Core.Models.Entities;
 using AutoMoq;
-using System;
 
 namespace PetApplication.Test
 {
@@ -20,14 +19,14 @@ namespace PetApplication.Test
         private readonly IPetService _petService = new PetService();
 
         private const string _response = "[{\"name\":\"Bob\",\"gender\":\"Male\",\"age\":23,\"pets\":[{\"name\":\"Garfield\",\"type\":\"Cat\"},{\"name\":\"Fido\",\"type\":\"Dog\"}]},{\"name\":\"Jennifer\",\"gender\":\"Female\",\"age\":18,\"pets\":[{\"name\":\"Garfield\",\"type\":\"Cat\"}]},{\"name\":\"Steve\",\"gender\":\"Male\",\"age\":45,\"pets\":null},{\"name\":\"Fred\",\"gender\":\"Male\",\"age\":40,\"pets\":[{\"name\":\"Tom\",\"type\":\"Cat\"},{\"name\":\"Max\",\"type\":\"Cat\"},{\"name\":\"Sam\",\"type\":\"Dog\"},{\"name\":\"Jim\",\"type\":\"Cat\"}]},{\"name\":\"Samantha\",\"gender\":\"Female\",\"age\":40,\"pets\":[{\"name\":\"Tabby\",\"type\":\"Cat\"}]},{\"name\":\"Alice\",\"gender\":\"Female\",\"age\":64,\"pets\":[{\"name\":\"Simba\",\"type\":\"Cat\"},{\"name\":\"Nemo\",\"type\":\"Fish\"}]}]";
-
         private List<Person> _malePeople = InitMaleRecords();
         private List<Person> _femalePeople = InitFemaleRecords();
         private static List<Pet> _femaleOwnedCats = InitFemaleOwnedCatsRecords();
         private static List<Pet> _maleOwnedCats = InitMaleOwnedCatsRecords();
-        private List<Pet> _femaleOwnedCatsAsc = InitFemaleOwnedCatsRecordsAsc();
-        private List<Pet> _maleOwnedCatsAsc = InitMaleOwnedCatsRecordsAsc();
 
+        /// <summary>
+        /// Initialize Mock setup
+        /// </summary>
         [SetUp]
         public void Setup()
         {
@@ -55,14 +54,13 @@ namespace PetApplication.Test
                 .Setup(p => p.GetAllCat(_femalePeople))
                 .Returns(_femaleOwnedCats);
 
-
             _mocker.GetMock<IPetService>()
                 .Setup(p => p.GetAllByAscendingPetName(_femaleOwnedCats))
-                .Returns(_femaleOwnedCatsAsc);
+                .Returns(_femaleOwnedCats.OrderBy(p => p.Name).ToList());
 
             _mocker.GetMock<IPetService>()
                .Setup(p => p.GetAllByAscendingPetName(_maleOwnedCats))
-               .Returns(_maleOwnedCatsAsc);
+               .Returns(_maleOwnedCats.OrderBy(p => p.Name).ToList());
 
             _petFetcher = _mocker.Create<PetFetcher>();
         }
@@ -149,7 +147,7 @@ namespace PetApplication.Test
         }
 
         /// <summary>
-        /// #8 Verify results for 
+        /// #8 Verify results for GetAllCat() from female owners
         /// </summary>
         [Test]
         public void TestPetServiceGetAllCatFromFemaleOwnersResult()
@@ -160,16 +158,44 @@ namespace PetApplication.Test
         }
 
         /// <summary>
-        /// #9 Verify results of GetMaleOwners() method
+        /// #9  Verify results for GetAllCat() from male owners
         /// </summary>
         [Test]
         public void TestPetServiceGetAllCatFromMaleOwnersResult()
         {
-            var result = _petService.GetAllCat(_femalePeople).ToList();
+            var result = _petService.GetAllCat(_malePeople).ToList();
 
-            CollectionAssert.AreEqual(result, _mocker.GetMock<IPetService>().Object.GetAllCat(_femalePeople));
+            CollectionAssert.AreEqual(result, _mocker.GetMock<IPetService>().Object.GetAllCat(_malePeople));
         }
 
+        /// <summary>
+        /// #10 Verify results of male owned cats if ordered by ascending 
+        /// </summary>
+        [Test]
+        public void TestPetServiceCheckMaleOwnedCatsIfOrderAscending()
+        {
+            var expected = _petService.GetAllByAscendingPetName(_maleOwnedCats);
+            var result = _mocker.GetMock<IPetService>().Object.GetAllByAscendingPetName(_maleOwnedCats);
+
+            Assert.IsTrue(expected.SequenceEqual(result));
+        }
+
+        /// <summary>
+        /// #11 Verify results of female owned cats if ordered by ascending 
+        /// </summary>
+        [Test]
+        public void TestPetServiceCheckFemaleOwnedCatsIfOrderAscending()
+        {
+            var expected = _petService.GetAllByAscendingPetName(_femaleOwnedCats);
+            var result = _mocker.GetMock<IPetService>().Object.GetAllByAscendingPetName(_femaleOwnedCats);
+
+            Assert.IsTrue(expected.SequenceEqual(result));
+        }
+
+        /// <summary>
+        /// Initialize list of Pet objects for female owned cats
+        /// </summary>
+        /// <returns>Returns a list of Pet object</returns>
         private static List<Pet> InitFemaleOwnedCatsRecords()
         {
             return new List<Pet>
@@ -180,6 +206,10 @@ namespace PetApplication.Test
             };
         }
         
+        /// <summary>
+        /// Initialize list of Pet objects for male owned cats
+        /// </summary>
+        /// <returns>Returns a list of Pet object</returns>
         private static List<Pet> InitMaleOwnedCatsRecords()
         {
             return new List<Pet>
@@ -190,7 +220,11 @@ namespace PetApplication.Test
                 new Pet{ Name = "Jim", Type = "Cat"}
             };
         }
-        
+
+        /// <summary>
+        /// Initialize list of Person object for female records
+        /// </summary>
+        /// <returns>Returns list of Person object</returns>
         private static List<Person> InitFemaleRecords()
         {
             return new List<Person>
@@ -226,6 +260,10 @@ namespace PetApplication.Test
             };
         }
 
+        /// <summary>
+        /// Initialize list of Person object for male records
+        /// </summary>
+        /// <returns>Returns list of Person object</returns>
         private static List<Person> InitMaleRecords()
         {
             return new List<Person>

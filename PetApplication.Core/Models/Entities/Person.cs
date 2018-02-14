@@ -6,9 +6,22 @@ namespace PetApplication.Core.Models.Entities
     [Serializable]
     public class Person
     {
+        /// <summary>
+        /// Name of a person
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// String representation of Gender. 
+        /// Note: values are "Male" or "Female"
+        /// </summary>
         public string Gender { get; set; }
+        /// <summary>
+        /// Age of the person
+        /// </summary>
         public int Age { get; set; }        
+        /// <summary>
+        /// List of Pet objects owned by a person
+        /// </summary>
         public List<Pet> Pets { get; set; }
 
         /// <summary>
@@ -19,7 +32,7 @@ namespace PetApplication.Core.Models.Entities
         public override bool Equals(object obj)
         {
             var pObj = obj as Person;
-
+           
             return pObj != null
                 && Equals(Name, pObj.Name)
                 && Equals(Gender, pObj.Gender)
