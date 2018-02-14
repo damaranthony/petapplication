@@ -3,6 +3,7 @@ using System.Linq;
 using PetApplication.Core.Models.Entities;
 using PetApplication.Core.Common.Constants;
 using PetApplication.Core.Common.Extensions;
+using Newtonsoft.Json;
 
 namespace PetApplication.Core.Repositories
 {
@@ -15,7 +16,7 @@ namespace PetApplication.Core.Repositories
         /// <returns>Returns list of Person object</returns>
         public IEnumerable<Person> GetAll(string responseString)
         {
-            return responseString.ToPersonEntities();
+            return ToPersonModel(responseString);
         }
         /// <summary>
         /// Returns a list of Person object by gender female
@@ -24,7 +25,7 @@ namespace PetApplication.Core.Repositories
         /// <returns>Returns list of Person object</returns>
         public IEnumerable<Person> GetFemaleOwners(string responseString)
         {
-            var people = responseString.ToPersonEntities();
+            var people = ToPersonModel(responseString);
 
             return people.Where(x => x.Gender.ToLower() == Gender.Female && x.Pets != null);
         }
@@ -35,9 +36,14 @@ namespace PetApplication.Core.Repositories
         /// <returns>Returns a list of Person object</returns>
         public IEnumerable<Person> GetMaleOwners(string responseString)
         {
-            var people = responseString.ToPersonEntities();
+            var people = ToPersonModel(responseString);
 
             return people.Where(x => x.Gender.ToLower() == Gender.Male && x.Pets != null);
+        }
+
+        private IEnumerable<Person> ToPersonModel(string responseString)
+        {
+            return JsonConvert.DeserializeObject<IEnumerable<Person>>(responseString);
         }
 
     }

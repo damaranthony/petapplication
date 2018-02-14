@@ -5,6 +5,8 @@ using NUnit.Framework;
 using PetApplication.Core.BLL;
 using PetApplication.Core.Repositories;
 using PetApplication.Core.Models.Entities;
+using AutoMoq;
+using System;
 
 namespace PetApplication.Test
 {
@@ -12,16 +14,17 @@ namespace PetApplication.Test
     public class PetFetchTests
     {
         private PetFetcher _petFetcher;
-        private Mock<IDataSource> _mockDataSource;
-        private Mock<IPersonService> _mockPersonService;
-        private Mock<IPetService> _mockPetService;
+        private AutoMoqer _mocker;
+        private readonly IDataSource _dataSource = new DataSource();
+        private readonly IPersonService _personService = new PersonService();
+        private readonly IPetService _petService = new PetService();
 
         private const string _response = "[{\"name\":\"Bob\",\"gender\":\"Male\",\"age\":23,\"pets\":[{\"name\":\"Garfield\",\"type\":\"Cat\"},{\"name\":\"Fido\",\"type\":\"Dog\"}]},{\"name\":\"Jennifer\",\"gender\":\"Female\",\"age\":18,\"pets\":[{\"name\":\"Garfield\",\"type\":\"Cat\"}]},{\"name\":\"Steve\",\"gender\":\"Male\",\"age\":45,\"pets\":null},{\"name\":\"Fred\",\"gender\":\"Male\",\"age\":40,\"pets\":[{\"name\":\"Tom\",\"type\":\"Cat\"},{\"name\":\"Max\",\"type\":\"Cat\"},{\"name\":\"Sam\",\"type\":\"Dog\"},{\"name\":\"Jim\",\"type\":\"Cat\"}]},{\"name\":\"Samantha\",\"gender\":\"Female\",\"age\":40,\"pets\":[{\"name\":\"Tabby\",\"type\":\"Cat\"}]},{\"name\":\"Alice\",\"gender\":\"Female\",\"age\":64,\"pets\":[{\"name\":\"Simba\",\"type\":\"Cat\"},{\"name\":\"Nemo\",\"type\":\"Fish\"}]}]";
 
         private List<Person> _malePeople = InitMaleRecords();
         private List<Person> _femalePeople = InitFemaleRecords();
-        private List<Pet> _femaleOwnedCats = InitFemaleOwnedCatsRecords();
-        private List<Pet> _maleOwnedCats = InitMaleOwnedCatsRecords();
+        private static List<Pet> _femaleOwnedCats = InitFemaleOwnedCatsRecords();
+        private static List<Pet> _maleOwnedCats = InitMaleOwnedCatsRecords();
         private List<Pet> _femaleOwnedCatsAsc = InitFemaleOwnedCatsRecordsAsc();
         private List<Pet> _maleOwnedCatsAsc = InitMaleOwnedCatsRecordsAsc();
 
@@ -29,51 +32,142 @@ namespace PetApplication.Test
         public void Setup()
         {
             _petFetcher = new PetFetcher();
-            _mockDataSource = new Mock<IDataSource>();
-            _mockPersonService = new Mock<IPersonService>();
-            _mockPetService = new Mock<IPetService>();
 
-            _mockDataSource
-                .Setup(p => p.GetDataAsync().ToString())
+            _mocker = new AutoMoqer();
+
+            _mocker.GetMock<IDataSource>()
+                .Setup(p => p.GetApiResponseString())
                 .Returns(_response);
 
-            _mockPersonService
-                .Setup(p => p.GetFemaleOwners(_response).ToList())
+            _mocker.GetMock<IPersonService>()
+                .Setup(p => p.GetFemaleOwners(_response))
                 .Returns(_femalePeople);
 
-            _mockPersonService
-                .Setup(p => p.GetFemaleOwners(_response).ToList())
+            _mocker.GetMock<IPersonService>()
+                .Setup(p => p.GetMaleOwners(_response))
                 .Returns(_malePeople);
 
-            _mockPetService
-                .Setup(p => p.GetAllCat(_malePeople).ToList())
+            _mocker.GetMock<IPetService>()
+                .Setup(p => p.GetAllCat(_malePeople))
                 .Returns(_maleOwnedCats);
 
-            _mockPetService
-                .Setup(p => p.GetAllCat(_femalePeople).ToList())
+            _mocker.GetMock<IPetService>()
+                .Setup(p => p.GetAllCat(_femalePeople))
                 .Returns(_femaleOwnedCats);
 
 
-            _mockPetService
+            _mocker.GetMock<IPetService>()
                 .Setup(p => p.GetAllByAscendingPetName(_femaleOwnedCats))
                 .Returns(_femaleOwnedCatsAsc);
 
-            _mockPetService
+            _mocker.GetMock<IPetService>()
                .Setup(p => p.GetAllByAscendingPetName(_maleOwnedCats))
                .Returns(_maleOwnedCatsAsc);
 
-            _petFetcher = new PetFetcher(
-                _mockDataSource.Object,
-                _mockPersonService.Object,
-                _mockPetService.Object);
+            _petFetcher = _mocker.Create<PetFetcher>();
         }
-
+        
+        /// <summary>
+        /// #1 Verify if DataSource.GetApiResponseString() has been executed once
+        /// </summary>
         [Test]
-        public void TestExecuteDatasource()
+        public void TestExecuteDataSource()
         {
             _petFetcher.GetAllPetsByOwnerGender();
 
-            _mockDataSource.Verify(p => p.GetDataAsync().ToString(), Times.Once);
+            _mocker.GetMock<IDataSource>()  
+                .Verify(p => p.GetApiResponseString(), Times.Once);
+        }
+
+        /// <summary>
+        /// #2 Check if API response is correct
+        /// </summary>
+        [Test]
+        public void TestDataSourceResponse()
+        {
+            var result = _dataSource.GetApiResponseString();
+
+            Assert.AreEqual(result, _mocker.GetMock<IDataSource>().Object.GetApiResponseString());
+        }
+
+        /// <summary>
+        /// #3 Verify if PersonService.GetMaleOwners(responseString) has been executed once
+        /// </summary>
+        [Test]
+        public void TestExecutePersonServiceGetMaleOwners()
+        {
+            _petFetcher.GetAllPetsByOwnerGender();
+
+            _mocker.GetMock<IPersonService>()
+                .Verify(p => p.GetMaleOwners(_response), Times.Once);
+        }
+
+        /// <summary>
+        /// #4 Verify if PersonService.GetFemaleOwners(responseString) has been executed once
+        /// </summary>
+        [Test]
+        public void TestExecutePersonServiceGetFemaleOwners()
+        {
+            _petFetcher.GetAllPetsByOwnerGender();
+
+            _mocker.GetMock<IPersonService>()
+                .Verify(p => p.GetFemaleOwners(_response), Times.Once);
+        }
+
+        /// <summary>
+        /// #5 Verify if PetService.GetAllCat(List<person> people) has been executed once
+        /// </summary>
+        [Test]
+        public void TestExecutePetServiceGetAllCat()
+        {
+            _petFetcher.GetAllPetsByOwnerGender();
+
+            _mocker.GetMock<IPetService>()
+                .Verify(p => p.GetAllCat(_malePeople), Times.Once);
+        }
+
+        /// <summary>
+        /// #6 Verify results of GetFemaleOwners() method
+        /// </summary>
+        [Test]
+        public void TestPersonalServiceGetFemaleOwnersResult()
+        {
+            var result = _personService.GetFemaleOwners(_response).ToList();
+
+            CollectionAssert.AreEqual(result, _mocker.GetMock<IPersonService>().Object.GetFemaleOwners(_response));
+        }
+
+        /// <summary>
+        /// #7 Verify results of GetMaleOwners() method
+        /// </summary>
+        [Test]
+        public void TestPersonalServiceGetMaleOwnersResult()
+        {
+            var result = _personService.GetMaleOwners(_response).ToList();
+
+            CollectionAssert.AreEqual(result, _mocker.GetMock<IPersonService>().Object.GetMaleOwners(_response));
+        }
+
+        /// <summary>
+        /// #8 Verify results for 
+        /// </summary>
+        [Test]
+        public void TestPetServiceGetAllCatFromFemaleOwnersResult()
+        {
+            var result = _petService.GetAllCat(_femalePeople).ToList();
+
+            CollectionAssert.AreEqual(result, _mocker.GetMock<IPetService>().Object.GetAllCat(_femalePeople));
+        }
+
+        /// <summary>
+        /// #9 Verify results of GetMaleOwners() method
+        /// </summary>
+        [Test]
+        public void TestPetServiceGetAllCatFromMaleOwnersResult()
+        {
+            var result = _petService.GetAllCat(_femalePeople).ToList();
+
+            CollectionAssert.AreEqual(result, _mocker.GetMock<IPetService>().Object.GetAllCat(_femalePeople));
         }
 
         private static List<Pet> InitFemaleOwnedCatsRecords()
@@ -85,17 +179,7 @@ namespace PetApplication.Test
                 new Pet{ Name = "Simba", Type = "Cat"}
             };
         }
-
-        private static List<Pet> InitFemaleOwnedCatsRecordsAsc()
-        {
-            return new List<Pet>
-            {
-                new Pet{ Name = "Garfield", Type = "Cat"},
-                 new Pet{ Name = "Simba", Type = "Cat"},
-                new Pet{ Name = "Tabby", Type = "Cat"}
-            };
-        }
-
+        
         private static List<Pet> InitMaleOwnedCatsRecords()
         {
             return new List<Pet>
@@ -106,17 +190,7 @@ namespace PetApplication.Test
                 new Pet{ Name = "Jim", Type = "Cat"}
             };
         }
-
-        private static List<Pet> InitMaleOwnedCatsRecordsAsc()
-        {
-            return new List<Pet>
-            {
-                new Pet{ Name = "Garfield", Type = "Cat"},
-                new Pet{ Name = "Jim", Type = "Cat"},
-                new Pet{ Name = "Max", Type = "Cat"},
-                new Pet{ Name = "Tom", Type = "Cat"}
-            };
-        }
+        
         private static List<Person> InitFemaleRecords()
         {
             return new List<Person>
@@ -180,5 +254,6 @@ namespace PetApplication.Test
                 }
             };
         }
+
     }
 }

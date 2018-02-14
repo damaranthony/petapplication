@@ -31,7 +31,7 @@ namespace PetApplication.Core.BLL
         public PetsViewModel GetAllPetsByOwnerGender()
         {
             //get response string from api
-            var responseString = Task.Run(_dataSource.GetDataAsync).Result;
+            var responseString = _dataSource.GetApiResponseString();
             //get owners by gender
             var femaleOwners = _personService.GetFemaleOwners(responseString).ToList();
             var maleOwners = _personService.GetMaleOwners(responseString).ToList();
