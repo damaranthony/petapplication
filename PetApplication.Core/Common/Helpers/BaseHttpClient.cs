@@ -15,11 +15,11 @@ namespace PetApplication.Core.Common.Helpers
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri(Configurator.Base_Api)
+                BaseAddress = new Uri(Configurator.BaseApi)
             };
 
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(Configurator.Default_Media_Type));
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(Configurator.DefaultMediaType));
 
             return client;
         }

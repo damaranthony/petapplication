@@ -13,16 +13,17 @@ namespace PetApplication.Core.Repositories
         /// </summary>
         /// <param name="pets">Return a list of Pet object</param>
         /// <returns></returns>
-        public List<Pet> GetAllByAscendingPetName(List<Pet> pets)
+        public List<Pet> GetAllByAscendingPetName(IEnumerable<Pet> pets)
         {
             return pets.OrderBy(p => p.Name).ToList();
         }
+
         /// <summary>
         /// Get all pet cat from a list of Person object
         /// </summary>
         /// <param name="people">List of Person object</param>
         /// <returns>Returns a list of all cats</returns>
-        public IEnumerable<Pet> GetAllCat(List<Person> people)
+        public IEnumerable<Pet> GetAllCat(IEnumerable<Person> people)
         {
             return people
                 .SelectMany(p => p.Pets)

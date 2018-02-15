@@ -12,17 +12,17 @@ namespace PetApplication.Core.Repositories
         /// <returns>Returns a result in string form</returns>
         public string GetApiResponseString()
         {
-            return Task.Run(GetDataAsync).Result.ToString();
+            return Task.Run(GetDataAsync).Result;
         }
 
         /// <summary>
         /// Gets the response from API 
         /// </summary>
         /// <returns>HTTP response as string</returns>
-        private async Task<string> GetDataAsync()
+        private static async Task<string> GetDataAsync()
         {
             var httpClient = BaseHttpClient.GetClient();
-            var httpResponse = await httpClient.GetAsync(Configurator.People_Api);
+            var httpResponse = await httpClient.GetAsync(Configurator.PeopleApi);
 
             if (httpResponse.IsSuccessStatusCode)
             {

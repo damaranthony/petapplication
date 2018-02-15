@@ -31,25 +31,15 @@ namespace PetApplication.Core.Models.Entities
         /// <returns>Returns true if all the properties are equal</returns>
         public override bool Equals(object obj)
         {
-            var pObj = obj as Person;
-           
-            return pObj != null
+            return obj is Person pObj
                 && Equals(Name, pObj.Name)
                 && Equals(Gender, pObj.Gender)
                 && Equals(Age, pObj.Age);
         }
-        /// <summary>
-        /// Override for GetHasCode method to make comparing of list of objects more comprehensive through hash codes
-        /// </summary>
-        /// <returns>Returns the hash code based on all the properties</returns>
+       
         public override int GetHashCode()
         {
-            int hc = 0x00;
-            hc ^= (Name != null) ? Name.GetHashCode() : 0;
-            hc ^= (Gender != null) ? Gender.GetHashCode() : 0;
-            hc ^= Age.GetHashCode();
-            return hc;
+            throw new NotImplementedException();
         }
-
     }
 }

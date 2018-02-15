@@ -7,7 +7,7 @@ using PetApplication.Core.Repositories;
 using PetApplication.Core.Models.Entities;
 using AutoMoq;
 
-namespace PetApplication.Test
+namespace PetApplication.Tests
 {
     [TestFixture]
     public class PetFetchTests
@@ -18,11 +18,11 @@ namespace PetApplication.Test
         private readonly IPersonService _personService = new PersonService();
         private readonly IPetService _petService = new PetService();
 
-        private const string _response = "[{\"name\":\"Bob\",\"gender\":\"Male\",\"age\":23,\"pets\":[{\"name\":\"Garfield\",\"type\":\"Cat\"},{\"name\":\"Fido\",\"type\":\"Dog\"}]},{\"name\":\"Jennifer\",\"gender\":\"Female\",\"age\":18,\"pets\":[{\"name\":\"Garfield\",\"type\":\"Cat\"}]},{\"name\":\"Steve\",\"gender\":\"Male\",\"age\":45,\"pets\":null},{\"name\":\"Fred\",\"gender\":\"Male\",\"age\":40,\"pets\":[{\"name\":\"Tom\",\"type\":\"Cat\"},{\"name\":\"Max\",\"type\":\"Cat\"},{\"name\":\"Sam\",\"type\":\"Dog\"},{\"name\":\"Jim\",\"type\":\"Cat\"}]},{\"name\":\"Samantha\",\"gender\":\"Female\",\"age\":40,\"pets\":[{\"name\":\"Tabby\",\"type\":\"Cat\"}]},{\"name\":\"Alice\",\"gender\":\"Female\",\"age\":64,\"pets\":[{\"name\":\"Simba\",\"type\":\"Cat\"},{\"name\":\"Nemo\",\"type\":\"Fish\"}]}]";
-        private List<Person> _malePeople = InitMaleRecords();
-        private List<Person> _femalePeople = InitFemaleRecords();
-        private static List<Pet> _femaleOwnedCats = InitFemaleOwnedCatsRecords();
-        private static List<Pet> _maleOwnedCats = InitMaleOwnedCatsRecords();
+        private const string ResponseString = "[{\"name\":\"Bob\",\"gender\":\"Male\",\"age\":23,\"pets\":[{\"name\":\"Garfield\",\"type\":\"Cat\"},{\"name\":\"Fido\",\"type\":\"Dog\"}]},{\"name\":\"Jennifer\",\"gender\":\"Female\",\"age\":18,\"pets\":[{\"name\":\"Garfield\",\"type\":\"Cat\"}]},{\"name\":\"Steve\",\"gender\":\"Male\",\"age\":45,\"pets\":null},{\"name\":\"Fred\",\"gender\":\"Male\",\"age\":40,\"pets\":[{\"name\":\"Tom\",\"type\":\"Cat\"},{\"name\":\"Max\",\"type\":\"Cat\"},{\"name\":\"Sam\",\"type\":\"Dog\"},{\"name\":\"Jim\",\"type\":\"Cat\"}]},{\"name\":\"Samantha\",\"gender\":\"Female\",\"age\":40,\"pets\":[{\"name\":\"Tabby\",\"type\":\"Cat\"}]},{\"name\":\"Alice\",\"gender\":\"Female\",\"age\":64,\"pets\":[{\"name\":\"Simba\",\"type\":\"Cat\"},{\"name\":\"Nemo\",\"type\":\"Fish\"}]}]";
+        private readonly List<Person> _malePeople = InitMaleRecords();
+        private readonly List<Person> _femalePeople = InitFemaleRecords();
+        private readonly List<Pet> _femaleOwnedCats = InitFemaleOwnedCatsRecords();
+        private readonly List<Pet> _maleOwnedCats = InitMaleOwnedCatsRecords();
 
         /// <summary>
         /// Initialize Mock setup
@@ -36,14 +36,14 @@ namespace PetApplication.Test
 
             _mocker.GetMock<IDataSource>()
                 .Setup(p => p.GetApiResponseString())
-                .Returns(_response);
+                .Returns(ResponseString);
 
             _mocker.GetMock<IPersonService>()
-                .Setup(p => p.GetFemaleOwners(_response))
+                .Setup(p => p.GetFemaleOwners(ResponseString))
                 .Returns(_femalePeople);
 
             _mocker.GetMock<IPersonService>()
-                .Setup(p => p.GetMaleOwners(_response))
+                .Setup(p => p.GetMaleOwners(ResponseString))
                 .Returns(_malePeople);
 
             _mocker.GetMock<IPetService>()
@@ -97,7 +97,7 @@ namespace PetApplication.Test
             _petFetcher.GetAllPetsByOwnerGender();
 
             _mocker.GetMock<IPersonService>()
-                .Verify(p => p.GetMaleOwners(_response), Times.Once);
+                .Verify(p => p.GetMaleOwners(ResponseString), Times.Once);
         }
 
         /// <summary>
@@ -109,11 +109,11 @@ namespace PetApplication.Test
             _petFetcher.GetAllPetsByOwnerGender();
 
             _mocker.GetMock<IPersonService>()
-                .Verify(p => p.GetFemaleOwners(_response), Times.Once);
+                .Verify(p => p.GetFemaleOwners(ResponseString), Times.Once);
         }
 
         /// <summary>
-        /// #5 Verify if PetService.GetAllCat(List<person> people) has been executed once
+        /// #5 Verify if PetService.GetAllCat(List of people) has been executed once
         /// </summary>
         [Test]
         public void TestExecutePetServiceGetAllCat()
@@ -130,9 +130,9 @@ namespace PetApplication.Test
         [Test]
         public void TestPersonalServiceGetFemaleOwnersResult()
         {
-            var result = _personService.GetFemaleOwners(_response).ToList();
+            var result = _personService.GetFemaleOwners(ResponseString).ToList();
 
-            CollectionAssert.AreEqual(result, _mocker.GetMock<IPersonService>().Object.GetFemaleOwners(_response));
+            CollectionAssert.AreEqual(result, _mocker.GetMock<IPersonService>().Object.GetFemaleOwners(ResponseString));
         }
 
         /// <summary>
@@ -141,9 +141,9 @@ namespace PetApplication.Test
         [Test]
         public void TestPersonalServiceGetMaleOwnersResult()
         {
-            var result = _personService.GetMaleOwners(_response).ToList();
+            var result = _personService.GetMaleOwners(ResponseString).ToList();
 
-            CollectionAssert.AreEqual(result, _mocker.GetMock<IPersonService>().Object.GetMaleOwners(_response));
+            CollectionAssert.AreEqual(result, _mocker.GetMock<IPersonService>().Object.GetMaleOwners(ResponseString));
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace PetApplication.Test
                     Pets = new List<Pet>
                     {
                         new Pet{ Name = "Simba", Type = "Cat"},
-                        new Pet{ Name = "Nemo", Type = "Fish"},
+                        new Pet{ Name = "Nemo", Type = "Fish"}
                     }
                 }
             };
@@ -287,7 +287,7 @@ namespace PetApplication.Test
                         new Pet{ Name = "Tom", Type = "Cat"},
                         new Pet{ Name = "Max", Type = "Cat"},
                         new Pet{ Name = "Sam", Type = "Dog"},
-                        new Pet{ Name = "Jim", Type = "Cat"},
+                        new Pet{ Name = "Jim", Type = "Cat"}
                     }
                 }
             };

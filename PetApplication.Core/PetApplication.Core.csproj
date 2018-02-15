@@ -63,7 +63,6 @@
     <Compile Include="Common\Constants\Gender.cs" />
     <Compile Include="Common\Constants\PetType.cs" />
     <Compile Include="Common\Helpers\BaseHttpClient.cs" />
-    <Compile Include="Common\Services\BaseService.cs" />
     <Compile Include="Models\Entities\Person.cs" />
     <Compile Include="Models\Entities\Pet.cs" />
     <Compile Include="Models\ViewModels\PetsViewModel.cs" />

@@ -5,7 +5,7 @@ namespace PetApplication.Core.Repositories
 {
     public interface IPetService
     {
-        IEnumerable<Pet> GetAllCat(List<Person> people);
-        List<Pet> GetAllByAscendingPetName(List<Pet> pets);
+        IEnumerable<Pet> GetAllCat(IEnumerable<Person> people);
+        List<Pet> GetAllByAscendingPetName(IEnumerable<Pet> pets);
     }
 }
